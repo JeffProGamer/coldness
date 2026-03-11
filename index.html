@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coldness • Freeze Your Discord</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+    
+    :root {
+      --cyan: #00f5ff;
+      --purple: #a855f7;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a12;
+      overflow-x: hidden;
+    }
+    
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .frost-glow {
+      box-shadow: 0 0 40px -10px var(--cyan),
+                  0 0 80px -20px var(--purple);
+    }
+    
+    .hero-title {
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, #00f5ff, #a855f7, #00f5ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: frostShimmer 4s linear infinite;
+    }
+    
+    @keyframes frostShimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .snow-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.6;
+    }
+    
+    .nav-link {
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .nav-link:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background: linear-gradient(to right, var(--cyan), var(--purple));
+      transition: width 0.4s ease;
+    }
+    
+    .nav-link:hover:after {
+      width: 100%;
+    }
+    
+    .profile-card {
+      animation: cardPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    @keyframes cardPop {
+      0% { transform: scale(0.6) rotate(-8deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    
+    .avatar-glow {
+      animation: avatarPulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes avatarPulse {
+      0%, 100% { box-shadow: 0 0 30px -5px var(--cyan); }
+      50% { box-shadow: 0 0 80px 20px var(--purple); }
+    }
+    
+    .section {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="text-white min-h-screen relative">
+  <!-- SNOW CANVAS (super light, 80 particles max) -->
+  <canvas id="snow" class="snow-canvas"></canvas>
+
+  <!-- NAVBAR -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-2xl flex items-center justify-center text-2xl shadow-lg">❄️</div>
+        <h1 class="text-3xl font-black tracking-tighter">COLDNESS</h1>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-10 text-sm font-medium">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how" class="nav-link">How it works</a>
+        <a href="#" onclick="logout()" class="nav-link">Dashboard</a>
+      </div>
+      
+      <div id="nav-auth" class="flex items-center gap-4">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO / LANDING -->
+  <div id="landing" class="min-h-screen flex items-center relative z-10 pt-20">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <div class="inline-flex items-center gap-2 px-6 py-2 rounded-3xl glass mb-8 text-sm font-medium border border-white/10">
+        <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+        100% FREE • GITHUB PAGES • NO ADS
+      </div>
+      
+      <h1 class="hero-title mb-6 leading-none tracking-[-6px]">
+        FREEZE<br>YOUR<br>DISCORD
+      </h1>
+      
+      <p class="max-w-lg mx-auto text-2xl text-gray-300 mb-12">
+        Connect once.<br>
+        Look insanely cool forever.
+      </p>
+      
+      <button onclick="startLogin()" 
+        class="group relative px-14 py-7 text-2xl font-bold rounded-3xl bg-gradient-to-r from-[#00f5ff] to-[#a855f7] text-black hover:scale-105 active:scale-95 transition-all duration-300 shadow-2xl shadow-cyan-500/50 flex items-center gap-4 mx-auto">
+        <span>CONNECT WITH DISCORD</span>
+        <span class="text-4xl group-active:rotate-12 transition">🧊</span>
+      </button>
+      
+      <div class="mt-16 flex justify-center gap-8 text-xs uppercase tracking-widest opacity-60">
+        <div>Instant</div>
+        <div>·</div>
+        <div>No lag</div>
+        <div>·</div>
+        <div>Mobile first</div>
+      </div>
+    </div>
+    
+    <!-- Floating badges -->
+    <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-6 text-xs">
+      <div class="glass px-5 py-3 rounded-3xl flex items-center gap-2">
+        <span class="text-cyan-400">●</span>
+        LIVE PROFILE
+      </div>
+      <div class="glass px-5 py-3 rounded-3xl flex items-center gap-2">
+        <span class="text-purple-400">❄️</span>
+        ANIMATED
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE DASHBOARD (hidden until login) -->
+  <div id="dashboard" class="hidden min-h-screen pt-24 pb-20 relative z-10">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row gap-8 items-start">
+        <!-- PROFILE CARD -->
+        <div id="profile-card" 
+          class="profile-card glass rounded-3xl p-10 flex-1 frost-glow border border-white/10">
+          <div class="flex justify-between items-start mb-8">
+            <div>
+              <div id="status" 
+                class="inline-flex items-center gap-2 px-5 py-1.5 bg-emerald-500/10 text-emerald-400 text-xs font-medium rounded-3xl">
+                <div class="w-2 h-2 bg-emerald-400 rounded-full animate-ping"></div>
+                ONLINE IN COLDNESS
+              </div>
+            </div>
+            <button onclick="logout()" 
+              class="text-xs px-6 py-3 rounded-2xl hover:bg-white/10 transition flex items-center gap-2">
+              <span>DISCONNECT</span>
+              <span class="text-lg">×</span>
+            </button>
+          </div>
+          
+          <div class="flex flex-col items-center text-center">
+            <div id="avatar-container" class="relative mb-8">
+              <img id="avatar" 
+                class="w-48 h-48 rounded-3xl object-cover border-8 border-white/20 avatar-glow transition-all">
+              <div class="absolute -inset-4 bg-gradient-to-br from-cyan-400/20 to-purple-500/20 rounded-[2.5rem] -z-10 animate-spin-slow"></div>
+            </div>
+            
+            <h2 id="display-name" class="text-5xl font-black tracking-tighter mb-1"></h2>
+            <p id="username" class="text-2xl text-gray-400 mb-6"></p>
+            
+            <div class="bg-black/30 px-8 py-3 rounded-3xl text-sm font-mono mb-10">
+              ID: <span id="user-id" class="text-cyan-300"></span>
+            </div>
+            
+            <div onclick="copyID()" 
+              class="cursor-pointer flex items-center gap-3 text-xs uppercase tracking-widest px-8 py-4 rounded-3xl border border-white/10 hover:border-cyan-400 transition group">
+              <span>COPY DISCORD ID</span>
+              <span class="group-active:scale-125 transition">📋</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- SIDE INFO -->
+        <div class="flex-1 space-y-6">
+          <div class="glass rounded-3xl p-8 h-full flex flex-col">
+            <div class="text-xs uppercase tracking-widest mb-4 text-cyan-400">Your Coldness Score</div>
+            <div id="score" class="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-cyan-300 to-purple-400">94.7</div>
+            <div class="text-sm text-gray-400 mt-auto">Because you’re that cool ❄️</div>
+          </div>
+          
+          <div class="glass rounded-3xl p-8">
+            <div class="text-xs uppercase tracking-widest mb-6">Quick links</div>
+            <div class="grid grid-cols-2 gap-4">
+              <a href="https://discord.com" target="_blank" 
+                class="block p-5 rounded-3xl bg-white/5 hover:bg-white/10 transition text-center">
+                Open Discord
+              </a>
+              <button onclick="logout()" 
+                class="block p-5 rounded-3xl bg-white/5 hover:bg-red-500/10 transition text-center text-red-400">
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES SECTION -->
+  <div id="features" class="py-28 bg-black/40 relative z-10">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <div class="inline text-xs tracking-[3px] bg-white/10 px-8 py-3 rounded-3xl">WHY PEOPLE ARE OBSESSED</div>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="section glass rounded-3xl p-10 text-center hover:scale-105 transition-all duration-500">
+          <div class="text-6xl mb-6">🧊</div>
+          <h3 class="text-2xl font-bold mb-4">Insanely Smooth</h3>
+          <p class="text-gray-400">80-particle snow + pure CSS animations. Runs buttery on phones &amp; laptops.</p>
+        </div>
+        <div class="section glass rounded-3xl p-10 text-center hover:scale-105 transition-all duration-500">
+          <div class="text-6xl mb-6">🌌</div>
+          <h3 class="text-2xl font-bold mb-4">Frosted Glass UI</h3>
+          <p class="text-gray-400">Every corner rounded to perfection. Pure cyber-frost aesthetic.</p>
+        </div>
+        <div class="section glass rounded-3xl p-10 text-center hover:scale-105 transition-all duration-500">
+          <div class="text-6xl mb-6">⚡</div>
+          <h3 class="text-2xl font-bold mb-4">One-click Connect</h3>
+          <p class="text-gray-400">Discord OAuth2. No backend. Just you and the cold.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div id="how" class="py-28 relative z-10">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-5xl font-black mb-4">So simple it feels illegal</h2>
+      <p class="text-xl text-gray-400 mb-16">3 seconds. Zero setup. Maximum vibe.</p>
+      
+      <div class="flex flex-col md:flex-row gap-10 justify-center items-center">
+        <div class="flex-1 max-w-xs">
+          <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-white/10 flex items-center justify-center text-4xl">1️⃣</div>
+          <div class="text-2xl font-bold">Click Connect</div>
+          <div class="text-sm text-gray-500 mt-2">Discord pops up</div>
+        </div>
+        <div class="hidden md:block text-6xl text-white/10">→</div>
+        <div class="flex-1 max-w-xs">
+          <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-white/10 flex items-center justify-center text-4xl">2️⃣</div>
+          <div class="text-2xl font-bold">Login once</div>
+          <div class="text-sm text-gray-500 mt-2">We only read your profile</div>
+        </div>
+        <div class="hidden md:block text-6xl text-white/10">→</div>
+        <div class="flex-1 max-w-xs">
+          <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-white/10 flex items-center justify-center text-4xl">3️⃣</div>
+          <div class="text-2xl font-bold">You’re frozen</div>
+          <div class="text-sm text-gray-500 mt-2">Profile lives here forever</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="py-12 border-t border-white/10 text-center text-xs text-gray-500 relative z-10">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div>Made with ❄️ for GitHub Pages • 2026</div>
+      <div class="flex gap-8">
+        <a href="https://github.com" target="_blank" class="hover:text-white transition">GitHub</a>
+        <a href="#" class="hover:text-white transition">Discord</a>
+      </div>
+      <div>© COLDNESS — All vibes reserved</div>
+    </div>
+  </footer>
+
+  <script>
+    // ====================== CONFIG ======================
+    const CLIENT_ID = 'YOUR_CLIENT_ID_HERE';           // ← CHANGE THIS
+    const REDIRECT_URI = 'https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/'; // ← CHANGE THIS (exact GitHub Pages URL)
+    const SCOPE = 'identify';
+    const AUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=${SCOPE}`;
+
+    let token = localStorage.getItem('discord_token');
+
+    // ====================== TAILWIND ======================
+    function initTailwind() {
+      // Already loaded via CDN
+    }
+
+    // ====================== SNOW EFFECT (lightweight) ======================
+    function createSnow() {
+      const canvas = document.getElementById('snow');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+      
+      class Particle {
+        constructor() {
+          this.reset();
+        }
+        reset() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height * -1;
+          this.size = Math.random() * 4 + 1;
+          this.speed = Math.random() * 1.5 + 0.6;
+          this.opacity = Math.random() * 0.6 + 0.4;
+        }
+        update() {
+          this.y += this.speed;
+          this.x += Math.sin(this.y / 30) * 0.6;
+          if (this.y > canvas.height) this.reset();
+        }
+        draw() {
+          ctx.fillStyle = `rgba(200, 240, 255, ${this.opacity})`;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      
+      for (let i = 0; i < 80; i++) {
+        particles.push(new Particle());
+      }
+      
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    // ====================== SCROLL ANIMATIONS ======================
+    function animateSections() {
+      const sections = document.querySelectorAll('.section');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.2 });
+      
+      sections.forEach(s => observer.observe(s));
+    }
+
+    // ====================== DISCORD AUTH ======================
+    function startLogin() {
+      window.location.href = AUTH_URL;
+    }
+
+    function checkCallback() {
+      const hash = window.location.hash.substring(1);
+      const params = new URLSearchParams(hash);
+      const newToken = params.get('access_token');
+      
+      if (newToken) {
+        localStorage.setItem('discord_token', newToken);
+        token = newToken;
+        window.history.replaceState({}, '', window.location.pathname);
+        showDashboard();
+      }
+    }
+
+    async function fetchProfile() {
+      if (!token) return;
+      
+      try {
+        const res = await fetch('https://discord.com/api/users/@me', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        if (!res.ok) throw new Error('Token expired');
+        
+        const user = await res.json();
+        
+        const avatarURL = user.avatar 
+          ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=512`
+          : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.id) % 5}.png`;
+        
+        // Fill profile
+        document.getElementById('avatar').src = avatarURL;
+        document.getElementById('display-name').textContent = user.global_name || user.username;
+        document.getElementById('username').textContent = `@${user.username}`;
+        document.getElementById('user-id').textContent = user.id;
+        
+        // Random cold score for fun
+        document.getElementById('score').textContent = (92 + Math.random() * 7).toFixed(1);
+        
+      } catch (e) {
+        console.error(e);
+        logout();
+      }
+    }
+
+    function showDashboard() {
+      document.getElementById('landing').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      
+      // Update nav
+      document.getElementById('nav-auth').innerHTML = `
+        <div onclick="logout()" 
+          class="px-7 py-3 rounded-3xl glass text-xs font-medium cursor-pointer hover:bg-white/10 transition flex items-center gap-2">
+          <span class="text-emerald-400">●</span>
+          CONNECTED
+        </div>
+      `;
+      
+      fetchProfile();
+    }
+
+    function showLanding() {
+      document.getElementById('landing').classList.remove('hidden');
+      document.getElementById('dashboard').classList.add('hidden');
+      
+      document.getElementById('nav-auth').innerHTML = `
+        <button onclick="startLogin()" 
+          class="px-8 py-4 bg-white/10 hover:bg-white/20 transition rounded-3xl text-sm font-semibold">
+          CONNECT DISCORD
+        </button>
+      `;
+    }
+
+    function logout() {
+      localStorage.removeItem('discord_token');
+      token = null;
+      showLanding();
+    }
+
+    function copyID() {
+      const id = document.getElementById('user-id').textContent;
+      navigator.clipboard.writeText(id);
+      
+      const btn = event.currentTarget;
+      const original = btn.innerHTML;
+      btn.innerHTML = `✓ COPIED!`;
+      btn.style.color = '#67e8f9';
+      
+      setTimeout(() => {
+        btn.innerHTML = original;
+        btn.style.color = '';
+      }, 1800);
+    }
+
+    // ====================== INIT ======================
+    window.onload = () => {
+      // Tailwind ready
+      initTailwind();
+      
+      // Snow
+      createSnow();
+      
+      // Scroll animations
+      animateSections();
+      
+      // Check if returning from Discord
+      checkCallback();
+      
+      // Show correct screen
+      if (token) {
+        showDashboard();
+      } else {
+        showLanding();
+      }
+      
+      // Keyboard escape for fun
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !document.getElementById('dashboard').classList.contains('hidden')) {
+          logout();
+        }
+      });
+    };
+  </script>
+</body>
+</html>
