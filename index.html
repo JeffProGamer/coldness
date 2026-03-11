@@ -1,417 +1,531 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>COLDNESS • Freeze Discord + Roblox</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
-    
-    :root {
-      --cyan: #00f5ff;
-      --purple: #a855f7;
-      --roblox-red: #ff0000;
-    }
-    
-    body { font-family: 'Inter', sans-serif; background: #0a0a12; overflow-x: hidden; }
-    
-    .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.08); }
-    .frost-glow { box-shadow: 0 0 40px -10px var(--cyan), 0 0 80px -20px var(--purple); }
-    
-    .hero-title {
-      font-size: clamp(3rem, 8vw, 7rem);
-      font-weight: 900;
-      background: linear-gradient(90deg, #00f5ff, #a855f7, #00f5ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: frostShimmer 4s linear infinite;
-    }
-    
-    @keyframes frostShimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-    
-    .snow-canvas { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1; opacity:0.6; }
-    
-    .profile-card { animation: cardPop 0.8s cubic-bezier(0.34,1.56,0.64,1); }
-    @keyframes cardPop { 0% { transform:scale(0.6) rotate(-8deg); opacity:0; } 100% { transform:scale(1) rotate(0); opacity:1; } }
-    
-    .avatar-glow { animation: avatarPulse 3s ease-in-out infinite; }
-    @keyframes avatarPulse { 0%,100% { box-shadow:0 0 30px -5px var(--cyan); } 50% { box-shadow:0 0 80px 20px var(--purple); } }
-    
-    .frost-button { position:relative; overflow:hidden; }
-    .frost-button::before {
-      content:''; position:absolute; top:-50%; left:-50%; width:40%; height:300%;
-      background:linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
-      transform:skewX(-20deg); animation:frostSweep 4s linear infinite;
-    }
-    @keyframes frostSweep { 0% { transform:translateX(-150%) skewX(-20deg); } 100% { transform:translateX(400%) skewX(-20deg); } }
-    
-    .status-emoji { font-size:4.5rem; animation:coldFreeze 2.5s ease-in-out infinite; filter:drop-shadow(0 0 20px #00f5ff); }
-    @keyframes coldFreeze { 0%,100% { transform:scale(1) rotate(-8deg); } 50% { transform:scale(1.15) rotate(8deg); } }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COLDNESS • Freeze Discord + Roblox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
 
-    /* MODAL STYLES */
-    .modal {
-      animation: modalPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    @keyframes modalPop {
-      0% { transform: scale(0.7) translateY(50px); opacity: 0; }
-      100% { transform: scale(1) translateY(0); opacity: 1; }
-    }
-  </style>
+        :root {
+            --cyan: #00f5ff;
+            --purple: #a855f7;
+            --roblox-red: #ff0000;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #0a0a12; 
+            overflow-x: hidden; 
+        }
+
+        .glass { 
+            background: rgba(255,255,255,0.05); 
+            backdrop-filter: blur(24px); 
+            border: 1px solid rgba(255,255,255,0.08); 
+        }
+        .frost-glow { 
+            box-shadow: 0 0 40px -10px var(--cyan), 0 0 80px -20px var(--purple); 
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 900;
+            background: linear-gradient(90deg, #00f5ff, #a855f7, #00f5ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: frostShimmer 4s linear infinite;
+        }
+
+        @keyframes frostShimmer { 
+            0%,100% { background-position: 0% 50%; } 
+            50% { background-position: 100% 50%; } 
+        }
+
+        .snow-canvas { 
+            position: fixed; 
+            top:0; left:0; 
+            width:100%; height:100%; 
+            pointer-events:none; 
+            z-index:1; 
+            opacity:0.6; 
+        }
+
+        .profile-card { 
+            animation: cardPop 0.8s cubic-bezier(0.34,1.56,0.64,1); 
+        }
+        @keyframes cardPop { 
+            0% { transform:scale(0.6) rotate(-8deg); opacity:0; } 
+            100% { transform:scale(1) rotate(0); opacity:1; } 
+        }
+
+        .avatar-glow { 
+            animation: avatarPulse 3s ease-in-out infinite; 
+        }
+        @keyframes avatarPulse { 
+            0%,100% { box-shadow:0 0 30px -5px var(--cyan); } 
+            50% { box-shadow:0 0 80px 20px var(--purple); } 
+        }
+
+        .frost-button { 
+            position:relative; 
+            overflow:hidden; 
+        }
+        .frost-button::before {
+            content:''; 
+            position:absolute; 
+            top:-50%; left:-50%; 
+            width:40%; height:300%;
+            background:linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform:skewX(-20deg); 
+            animation:frostSweep 4s linear infinite;
+        }
+        @keyframes frostSweep { 
+            0% { transform:translateX(-150%) skewX(-20deg); } 
+            100% { transform:translateX(400%) skewX(-20deg); } 
+        }
+
+        .status-emoji { 
+            font-size:4.5rem; 
+            animation:coldFreeze 2.5s ease-in-out infinite; 
+            filter:drop-shadow(0 0 20px #00f5ff); 
+        }
+        @keyframes coldFreeze { 
+            0%,100% { transform:scale(1) rotate(-8deg); } 
+            50% { transform:scale(1.15) rotate(8deg); } 
+        }
+
+        /* MODAL STYLES */
+        .modal {
+            animation: modalPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        @keyframes modalPop {
+            0% { transform: scale(0.7) translateY(50px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+    </style>
 </head>
 <body class="text-white min-h-screen relative">
 
-  <canvas id="snow" class="snow-canvas"></canvas>
+    <canvas id="snow" class="snow-canvas"></canvas>
 
-  <!-- NAVBAR -->
-  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-2xl flex items-center justify-center text-2xl shadow-lg animate-pulse">❄️</div>
-        <h1 class="text-3xl font-black tracking-tighter">COLDNESS</h1>
-      </div>
-      <div id="nav-auth" class="flex items-center gap-4"></div>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <div id="landing" class="min-h-screen flex items-center relative z-10 pt-20">
-    <div class="max-w-5xl mx-auto px-6 text-center">
-      <div class="inline-flex items-center gap-2 px-6 py-2 rounded-3xl glass mb-8 text-sm font-medium border border-white/10">
-        <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-        DISCORD + ROBLOX • 100% FREE • GITHUB PAGES
-      </div>
-      
-      <h1 class="hero-title mb-6 leading-none tracking-[-6px]">FREEZE<br>DISCORD<br>+ ROBLOX</h1>
-      
-      <p class="max-w-lg mx-auto text-2xl text-gray-300 mb-12">
-        Connect both accounts once.<br>
-        Live avatars • status • your game link forever.
-      </p>
-      
-      <div class="flex flex-col sm:flex-row gap-6 justify-center">
-        <button onclick="startDiscordLogin()" class="frost-button px-14 py-7 text-2xl font-bold rounded-3xl bg-gradient-to-r from-[#00f5ff] to-[#a855f7] text-black hover:scale-105 transition-all flex items-center gap-4">
-          <span>CONNECT DISCORD</span><span class="text-4xl">🧊</span>
-        </button>
-        <button onclick="startRobloxLogin()" class="frost-button px-14 py-7 text-2xl font-bold rounded-3xl bg-gradient-to-r from-[#ff0000] to-[#ff6600] text-white hover:scale-105 transition-all flex items-center gap-4">
-          <span>CONNECT ROBLOX</span><span class="text-4xl">🕹️</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- DASHBOARD (unchanged from previous version) -->
-  <div id="dashboard" class="hidden min-h-screen pt-24 pb-20 relative z-10">
-    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8">
-      <!-- Discord Card -->
-      <div id="discord-card" class="profile-card glass rounded-3xl p-10 frost-glow hidden">
-        <div class="flex justify-between items-start mb-8">
-          <div class="inline-flex items-center gap-2 px-5 py-1.5 bg-emerald-500/10 text-emerald-400 text-xs font-medium rounded-3xl">
-            <div class="w-2 h-2 bg-emerald-400 rounded-full animate-ping"></div>
-            DISCORD FROZEN
-          </div>
-          <button onclick="logoutDiscord()" class="text-xs px-6 py-3 rounded-2xl hover:bg-white/10">DISCONNECT</button>
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-2xl flex items-center justify-center text-2xl shadow-lg animate-pulse">❄️</div>
+                <h1 class="text-3xl font-black tracking-tighter">COLDNESS</h1>
+            </div>
+            <div id="nav-auth" class="flex items-center gap-4"></div>
         </div>
-        <div class="flex flex-col items-center text-center">
-          <img id="discord-avatar" class="w-48 h-48 rounded-3xl object-cover border-8 border-white/20 avatar-glow">
-          <h2 id="discord-name" class="text-5xl font-black mt-6"></h2>
-          <p id="discord-username" class="text-2xl text-gray-400"></p>
-          <div class="mt-10 flex items-center gap-6">
-            <div id="discord-status-emoji" class="status-emoji">❄️</div>
-            <div><div class="text-3xl font-bold text-emerald-400">ONLINE</div><div class="text-xs text-gray-400">you are frozen</div></div>
-          </div>
+    </nav>
+
+    <!-- HERO -->
+    <div id="landing" class="min-h-screen flex items-center relative z-10 pt-20">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-6 py-2 rounded-3xl glass mb-8 text-sm font-medium border border-white/10">
+                <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                DISCORD + ROBLOX • 100% FREE • GITHUB PAGES
+            </div>
+            
+            <h1 class="hero-title mb-6 leading-none tracking-[-6px]">FREEZE<br>DISCORD<br>+ ROBLOX</h1>
+            
+            <p class="max-w-lg mx-auto text-2xl text-gray-300 mb-12">
+                Connect both accounts once.<br><br>
+                Live avatars • status • your game link forever.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                <button onclick="startDiscordLogin()" class="frost-button px-14 py-7 text-2xl font-bold rounded-3xl bg-gradient-to-r from-[#00f5ff] to-[#a855f7] text-black hover:scale-105 transition-all flex items-center gap-4">
+                    <span>CONNECT DISCORD</span><span class="text-4xl">🧊</span>
+                </button>
+                <button onclick="startRobloxLogin()" class="frost-button px-14 py-7 text-2xl font-bold rounded-3xl bg-gradient-to-r from-[#ff0000] to-[#ff6600] text-white hover:scale-105 transition-all flex items-center gap-4">
+                    <span>CONNECT ROBLOX</span><span class="text-4xl">🕹️</span>
+                </button>
+            </div>
         </div>
-      </div>
+    </div>
 
-      <!-- Roblox Card -->
-      <div id="roblox-card" class="profile-card glass rounded-3xl p-10 frost-glow hidden">
-        <div class="flex justify-between items-start mb-8">
-          <div class="inline-flex items-center gap-2 px-5 py-1.5 bg-[#ff0000]/10 text-[#ff0000] text-xs font-medium rounded-3xl">
-            <div class="w-2 h-2 bg-[#ff0000] rounded-full animate-ping"></div>
-            ROBLOX CONNECTED
-          </div>
-          <button onclick="logoutRoblox()" class="text-xs px-6 py-3 rounded-2xl hover:bg-white/10">DISCONNECT</button>
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="hidden min-h-screen pt-24 pb-20 relative z-10">
+        <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8">
+            <!-- Discord Card -->
+            <div id="discord-card" class="profile-card glass rounded-3xl p-10 frost-glow hidden">
+                <div class="flex justify-between items-start mb-8">
+                    <div class="inline-flex items-center gap-2 px-5 py-1.5 bg-emerald-500/10 text-emerald-400 text-xs font-medium rounded-3xl">
+                        <div class="w-2 h-2 bg-emerald-400 rounded-full animate-ping"></div>
+                        DISCORD FROZEN
+                    </div>
+                    <button onclick="logoutDiscord()" class="text-xs px-6 py-3 rounded-2xl hover:bg-white/10">DISCONNECT</button>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <img id="discord-avatar" class="w-48 h-48 rounded-3xl object-cover border-8 border-white/20 avatar-glow">
+                    <h2 id="discord-name" class="text-5xl font-black mt-6"></h2>
+                    <p id="discord-username" class="text-2xl text-gray-400"></p>
+                    <div class="mt-10 flex items-center gap-6">
+                        <div id="discord-status-emoji" class="status-emoji">❄️</div>
+                        <div>
+                            <div class="text-3xl font-bold text-emerald-400">ONLINE</div>
+                            <div class="text-xs text-gray-400">you are frozen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roblox Card -->
+            <div id="roblox-card" class="profile-card glass rounded-3xl p-10 frost-glow hidden">
+                <div class="flex justify-between items-start mb-8">
+                    <div class="inline-flex items-center gap-2 px-5 py-1.5 bg-[#ff0000]/10 text-[#ff0000] text-xs font-medium rounded-3xl">
+                        <div class="w-2 h-2 bg-[#ff0000] rounded-full animate-ping"></div>
+                        ROBLOX CONNECTED
+                    </div>
+                    <button onclick="logoutRoblox()" class="text-xs px-6 py-3 rounded-2xl hover:bg-white/10">DISCONNECT</button>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <img id="roblox-avatar" class="w-48 h-48 rounded-3xl object-cover border-8 border-[#ff0000]/30 avatar-glow">
+                    <h2 id="roblox-name" class="text-5xl font-black mt-6 text-[#ff6600]"></h2>
+                    <p id="roblox-id" class="text-2xl text-gray-400 font-mono"></p>
+                </div>
+                
+                <div class="mt-12 bg-black/40 rounded-3xl p-8 text-center">
+                    <a href="https://www.roblox.com/games/79207411014209" target="_blank"
+                       class="block w-full py-7 text-center bg-gradient-to-r from-[#00f5ff] to-[#a855f7] text-black font-black text-2xl rounded-3xl hover:scale-105 transition-all flex items-center justify-center gap-3">
+                        PLAY COLDNESS 🧊<span class="text-4xl">🕹️</span>
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="flex flex-col items-center text-center">
-          <img id="roblox-avatar" class="w-48 h-48 rounded-3xl object-cover border-8 border-[#ff0000]/30 avatar-glow">
-          <h2 id="roblox-name" class="text-5xl font-black mt-6 text-[#ff6600]"></h2>
-          <p id="roblox-id" class="text-2xl text-gray-400 font-mono"></p>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="py-12 border-t border-white/10 text-center text-xs text-gray-500 relative z-10">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>Made with ❄️ for JeffProGamer • GitHub Pages • 2026</div>
+            <div class="flex gap-8">
+                <a href="https://www.roblox.com/games/79207411014209" target="_blank" class="hover:text-white transition">Play Game</a>
+                <a onclick="showPrivacy()" class="cursor-pointer hover:text-white transition">Privacy Policy</a>
+                <a onclick="showTerms()" class="cursor-pointer hover:text-white transition">Terms of Service</a>
+            </div>
+            <div>© COLDNESS — All vibes reserved</div>
         </div>
-        
-        <div class="mt-12 bg-black/40 rounded-3xl p-8 text-center">
-          <a href="https://www.roblox.com/games/79207411014209" target="_blank"
-             class="block w-full py-7 text-center bg-gradient-to-r from-[#00f5ff] to-[#a855f7] text-black font-black text-2xl rounded-3xl hover:scale-105 transition-all flex items-center justify-center gap-3">
-            PLAY COLDNESS 🧊<span class="text-4xl">🕹️</span>
-          </a>
+    </footer>
+
+    <!-- PRIVACY POLICY MODAL -->
+    <div id="privacy-modal" class="hidden fixed inset-0 bg-black/80 z-[999] flex items-center justify-center p-6">
+        <div class="modal glass max-w-3xl w-full max-h-[90vh] overflow-y-auto rounded-3xl p-10 relative">
+            <button onclick="hideModals()" class="absolute top-6 right-6 text-3xl hover:text-cyan-400">×</button>
+            <h1 class="text-5xl font-black mb-8 text-center">COLDNESS PRIVACY POLICY</h1>
+            <div class="prose prose-invert max-w-none text-gray-300">
+                <p class="text-sm opacity-70 mb-8">Last updated: March 2026 • We are not nice. We are cold.</p>
+                
+                <h2 class="text-2xl font-bold mb-4">1. We collect literally nothing</h2>
+                <p>This site is 100% static and runs in your browser. No server. No database. No analytics. No cookies. No tracking pixels. Nothing. We don't even know you exist until you click "Connect".</p>
+                
+                <h2 class="text-2xl font-bold mb-4">2. What actually happens when you connect</h2>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>Discord or Roblox gives us a token (stored ONLY in your browser localStorage).</li>
+                    <li>We use that token ONCE to fetch your public profile (avatar, username, ID). That's it.</li>
+                    <li>We never store your data anywhere except your own device.</li>
+                    <li>When you logout or clear your browser — poof, gone forever.</li>
+                </ul>
+                
+                <h2 class="text-2xl font-bold mb-4">3. Roblox & Discord know everything anyway</h2>
+                <p>They already have your data. We are just a pretty frost wrapper. If you don't want them to know, don't log in, snowflake.</p>
+                
+                <h2 class="text-2xl font-bold mb-4">4. GitHub Pages hosts this</h2>
+                <p>GitHub sees your IP and basic browser stuff (their privacy policy: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" class="text-cyan-400">here</a>). Not our problem.</p>
+                
+                <h2 class="text-2xl font-bold mb-4">5. We don't sell you. Ever.</h2>
+                <p class="font-bold text-red-400">We couldn't even if we wanted to — because we have nothing to sell.</p>
+            </div>
+            <div class="text-center mt-12 text-xs opacity-50">By using this site you accept that we really don't care about your data. Chill.</div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- FOOTER WITH LEGAL LINKS -->
-  <footer class="py-12 border-t border-white/10 text-center text-xs text-gray-500 relative z-10">
-    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-      <div>Made with ❄️ for JeffProGamer • GitHub Pages • 2026</div>
-      <div class="flex gap-8">
-        <a href="https://www.roblox.com/games/79207411014209" target="_blank" class="hover:text-white transition">Play Game</a>
-        <a onclick="showPrivacy()" class="cursor-pointer hover:text-white transition">Privacy Policy</a>
-        <a onclick="showTerms()" class="cursor-pointer hover:text-white transition">Terms of Service</a>
-      </div>
-      <div>© COLDNESS — All vibes reserved</div>
+    <!-- TERMS OF SERVICE MODAL -->
+    <div id="terms-modal" class="hidden fixed inset-0 bg-black/80 z-[999] flex items-center justify-center p-6">
+        <div class="modal glass max-w-3xl w-full max-h-[90vh] overflow-y-auto rounded-3xl p-10 relative">
+            <button onclick="hideModals()" class="absolute top-6 right-6 text-3xl hover:text-cyan-400">×</button>
+            <h1 class="text-5xl font-black mb-8 text-center">COLDNESS TERMS OF SERVICE</h1>
+            <div class="prose prose-invert max-w-none text-gray-300">
+                <p class="text-sm opacity-70 mb-8">Last updated: March 2026 • Read it or freeze.</p>
+                
+                <h2 class="text-2xl font-bold mb-4">1. This is a toy. Don't be stupid.</h2>
+                <p>Use at your own risk. We are not affiliated with Discord or Roblox. If they ban you for using third-party OAuth, that's on you. We warned you.</p>
+                
+                <h2 class="text-2xl font-bold mb-4">2. One account per person. No abuse.</h2>
+                <p>Don't spam logins. Don't try to break the rate limits. Don't share your tokens. If you do and everything explodes — we will laugh and do nothing.</p>
+                
+                <h2 class="text-2xl font-bold mb-4">3. We can change or kill this site anytime</h2>
+                <p>No notice. No apology. It's free. Cry about it.</p>
+                
+                <h2 class="text-2xl font-bold mb-4">4. Your Roblox game link is yours</h2>
+                <p>We just link to it. Any issues with the game? Talk to Roblox or yourself.</p>
+                
+                <h2 class="text-2xl font-bold mb-4 text-red-400">5. FINAL WARNING</h2>
+                <p class="font-bold">If you are under 13 or whatever the minimum age is in your country — get your parent's permission or get out. We won't save you.</p>
+                
+                <p class="text-center mt-10 text-xs opacity-60">By connecting you agree to everything above. No refunds (there were never any). Stay frosty.</p>
+            </div>
+        </div>
     </div>
-  </footer>
 
-  <!-- PRIVACY POLICY MODAL -->
-  <div id="privacy-modal" class="hidden fixed inset-0 bg-black/80 z-[999] flex items-center justify-center p-6">
-    <div class="modal glass max-w-3xl w-full max-h-[90vh] overflow-y-auto rounded-3xl p-10 relative">
-      <button onclick="hideModals()" class="absolute top-6 right-6 text-3xl hover:text-cyan-400">×</button>
-      <h1 class="text-5xl font-black mb-8 text-center">COLDNESS PRIVACY POLICY</h1>
-      <div class="prose prose-invert max-w-none text-gray-300">
-        <p class="text-sm opacity-70 mb-8">Last updated: March 2026 • We are not nice. We are cold.</p>
-        
-        <h2 class="text-2xl font-bold mb-4">1. We collect literally nothing</h2>
-        <p>This site is 100% static and runs in your browser. No server. No database. No analytics. No cookies. No tracking pixels. Nothing. We don't even know you exist until you click "Connect".</p>
-        
-        <h2 class="text-2xl font-bold mb-4">2. What actually happens when you connect</h2>
-        <ul class="list-disc pl-6 space-y-2">
-          <li>Discord or Roblox gives us a token (stored ONLY in your browser localStorage).</li>
-          <li>We use that token ONCE to fetch your public profile (avatar, username, ID). That's it.</li>
-          <li>We never store your data anywhere except your own device.</li>
-          <li>When you logout or clear your browser — poof, gone forever.</li>
-        </ul>
-        
-        <h2 class="text-2xl font-bold mb-4">3. Roblox &amp; Discord know everything anyway</h2>
-        <p>They already have your data. We are just a pretty frost wrapper. If you don't want them to know, don't log in, snowflake.</p>
-        
-        <h2 class="text-2xl font-bold mb-4">4. GitHub Pages hosts this</h2>
-        <p>GitHub sees your IP and basic browser stuff (their privacy policy: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" class="text-cyan-400">here</a>). Not our problem.</p>
-        
-        <h2 class="text-2xl font-bold mb-4">5. We don't sell you. Ever.</h2>
-        <p class="font-bold text-red-400">We couldn't even if we wanted to — because we have nothing to sell.</p>
-      </div>
-      <div class="text-center mt-12 text-xs opacity-50">By using this site you accept that we really don't care about your data. Chill.</div>
-    </div>
-  </div>
+    <script>
+        // ====================== CONFIG ======================
+        // UPDATED WITH YOUR CORRECT CLIENT ID (no trailing E)
+        const DISCORD_CLIENT_ID = '1481087516328202270';
+        const DISCORD_REDIRECT = 'https://jeffprogamer.github.io/coldness/';
 
-  <!-- TERMS OF SERVICE MODAL -->
-  <div id="terms-modal" class="hidden fixed inset-0 bg-black/80 z-[999] flex items-center justify-center p-6">
-    <div class="modal glass max-w-3xl w-full max-h-[90vh] overflow-y-auto rounded-3xl p-10 relative">
-      <button onclick="hideModals()" class="absolute top-6 right-6 text-3xl hover:text-cyan-400">×</button>
-      <h1 class="text-5xl font-black mb-8 text-center">COLDNESS TERMS OF SERVICE</h1>
-      <div class="prose prose-invert max-w-none text-gray-300">
-        <p class="text-sm opacity-70 mb-8">Last updated: March 2026 • Read it or freeze.</p>
-        
-        <h2 class="text-2xl font-bold mb-4">1. This is a toy. Don't be stupid.</h2>
-        <p>Use at your own risk. We are not affiliated with Discord or Roblox. If they ban you for using third-party OAuth, that's on you. We warned you.</p>
-        
-        <h2 class="text-2xl font-bold mb-4">2. One account per person. No abuse.</h2>
-        <p>Don't spam logins. Don't try to break the rate limits. Don't share your tokens. If you do and everything explodes — we will laugh and do nothing.</p>
-        
-        <h2 class="text-2xl font-bold mb-4">3. We can change or kill this site anytime</h2>
-        <p>No notice. No apology. It's free. Cry about it.</p>
-        
-        <h2 class="text-2xl font-bold mb-4">4. Your Roblox game link is yours</h2>
-        <p>We just link to it. Any issues with the game? Talk to Roblox or yourself.</p>
-        
-        <h2 class="text-2xl font-bold mb-4 text-red-400">5. FINAL WARNING</h2>
-        <p class="font-bold">If you are under 13 or whatever the minimum age is in your country — get your parent's permission or get out. We won't save you.</p>
-        
-        <p class="text-center mt-10 text-xs opacity-60">By connecting you agree to everything above. No refunds (there were never any). Stay frosty.</p>
-      </div>
-    </div>
-  </div>
+        const ROBLOX_CLIENT_ID = '2085360965921181873';
+        const ROBLOX_REDIRECT = 'https://jeffprogamer.github.io/coldness/';
 
-  <script>
-    // ====================== CONFIG ======================
-    const DISCORD_CLIENT_ID = '1481087516328202270E';
-    const DISCORD_REDIRECT = 'https://jeffprogamer.github.io/coldness/';
-    
-    const ROBLOX_CLIENT_ID = '2085360965921181873';
-    const ROBLOX_REDIRECT = 'https://jeffprogamer.github.io/coldness/';
+        let discordToken = localStorage.getItem('discord_token');
+        let robloxToken = localStorage.getItem('roblox_token');
 
-    let discordToken = localStorage.getItem('discord_token');
-    let robloxToken = localStorage.getItem('roblox_token');
-
-    // ====================== SNOW ======================
-    function createSnow() {
-      const canvas = document.getElementById('snow');
-      const ctx = canvas.getContext('2d');
-      let particles = [];
-      function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-      resize();
-      window.addEventListener('resize', resize);
-      class Particle {
-        constructor() { this.reset(); }
-        reset() {
-          this.x = Math.random() * canvas.width;
-          this.y = Math.random() * -canvas.height;
-          this.size = Math.random() * 4 + 1;
-          this.speed = Math.random() * 1.5 + 0.6;
-          this.opacity = Math.random() * 0.6 + 0.4;
-        }
-        update() { this.y += this.speed; this.x += Math.sin(this.y / 30) * 0.6; if (this.y > canvas.height) this.reset(); }
-        draw() {
-          ctx.fillStyle = `rgba(200, 240, 255, ${this.opacity})`;
-          ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-        }
-      }
-      for (let i = 0; i < 80; i++) particles.push(new Particle());
-      function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => { p.update(); p.draw(); });
-        requestAnimationFrame(animate);
-      }
-      animate();
-    }
-
-    // ====================== PKCE & AUTH (same as before) ======================
-    function base64urlEncode(buffer) {
-      let str = '';
-      const bytes = new Uint8Array(buffer);
-      for (let i = 0; i < bytes.byteLength; i++) str += String.fromCharCode(bytes[i]);
-      return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-    }
-    function generateCodeVerifier() {
-      const array = new Uint8Array(32);
-      crypto.getRandomValues(array);
-      return base64urlEncode(array);
-    }
-    async function generateCodeChallenge(verifier) {
-      const encoder = new TextEncoder();
-      const data = encoder.encode(verifier);
-      const digest = await crypto.subtle.digest('SHA-256', data);
-      return base64urlEncode(digest);
-    }
-
-    function startDiscordLogin() {
-      const url = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(DISCORD_REDIRECT)}&response_type=token&scope=identify`;
-      window.location.href = url;
-    }
-
-    async function startRobloxLogin() {
-      const verifier = generateCodeVerifier();
-      const challenge = await generateCodeChallenge(verifier);
-      localStorage.setItem('roblox_verifier', verifier);
-      const params = new URLSearchParams({
-        client_id: ROBLOX_CLIENT_ID,
-        redirect_uri: ROBLOX_REDIRECT,
-        response_type: 'code',
-        scope: 'openid profile',
-        code_challenge: challenge,
-        code_challenge_method: 'S256'
-      });
-      window.location.href = `https://apis.roblox.com/oauth/v1/authorize?${params}`;
-    }
-
-    // ====================== FETCH & SHOW (unchanged) ======================
-    async function fetchDiscord() { /* same as previous version */ 
-      if (!discordToken) return;
-      try {
-        const res = await fetch('https://discord.com/api/users/@me', { headers: { Authorization: `Bearer ${discordToken}` } });
-        const user = await res.json();
-        const avatarURL = user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=512` : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.id) % 5}.png`;
-        document.getElementById('discord-avatar').src = avatarURL;
-        document.getElementById('discord-name').textContent = user.global_name || user.username;
-        document.getElementById('discord-username').textContent = `@${user.username}`;
-      } catch (e) { logoutDiscord(); }
-    }
-
-    async function fetchRoblox() { /* same as previous */ 
-      if (!robloxToken) return;
-      try {
-        const res = await fetch('https://apis.roblox.com/oauth/v1/userinfo', { headers: { Authorization: `Bearer ${robloxToken}` } });
-        const user = await res.json();
-        const id = user.sub;
-        const thumbRes = await fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${id}&size=420x420&format=Png`);
-        const thumbJson = await thumbRes.json();
-        const avatarURL = thumbJson.data?.[0]?.imageUrl || 'https://www.roblox.com/headshot-default.png';
-        document.getElementById('roblox-avatar').src = avatarURL;
-        document.getElementById('roblox-name').textContent = user.name || 'Roblox Player';
-        document.getElementById('roblox-id').textContent = `ID: ${id}`;
-      } catch (e) { logoutRoblox(); }
-    }
-
-    async function checkCallback() { /* same as previous full version */ 
-      const hash = window.location.hash.substring(1);
-      const hashParams = new URLSearchParams(hash);
-      const newDiscordToken = hashParams.get('access_token');
-      if (newDiscordToken) {
-        localStorage.setItem('discord_token', newDiscordToken);
-        discordToken = newDiscordToken;
-        window.history.replaceState({}, '', window.location.pathname);
-      }
-
-      const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get('code');
-      if (code) {
-        const verifier = localStorage.getItem('roblox_verifier');
-        if (verifier) {
-          try {
-            const tokenRes = await fetch('https://apis.roblox.com/oauth/v1/token', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              body: new URLSearchParams({ grant_type: 'authorization_code', code, redirect_uri: ROBLOX_REDIRECT, client_id: ROBLOX_CLIENT_ID, code_verifier: verifier })
-            });
-            const tokenData = await tokenRes.json();
-            if (tokenData.access_token) {
-              localStorage.setItem('roblox_token', tokenData.access_token);
-              robloxToken = tokenData.access_token;
+        // ====================== SNOW ======================
+        function createSnow() {
+            const canvas = document.getElementById('snow');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            function resize() { 
+                canvas.width = window.innerWidth; 
+                canvas.height = window.innerHeight; 
             }
-          } catch (e) {}
-          localStorage.removeItem('roblox_verifier');
+            resize();
+            window.addEventListener('resize', resize);
+
+            class Particle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * -canvas.height;
+                    this.size = Math.random() * 4 + 1;
+                    this.speed = Math.random() * 1.5 + 0.6;
+                    this.opacity = Math.random() * 0.6 + 0.4;
+                }
+                update() { 
+                    this.y += this.speed; 
+                    this.x += Math.sin(this.y / 30) * 0.6; 
+                    if (this.y > canvas.height) this.reset(); 
+                }
+                draw() {
+                    ctx.fillStyle = `rgba(200, 240, 255, ${this.opacity})`;
+                    ctx.beginPath(); 
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); 
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animate);
+            }
+            animate();
         }
-        window.history.replaceState({}, '', window.location.pathname);
-      }
-      showCorrectScreen();
-    }
 
-    function showCorrectScreen() {
-      const hasDiscord = !!discordToken;
-      const hasRoblox = !!robloxToken;
-      if (hasDiscord || hasRoblox) {
-        document.getElementById('landing').classList.add('hidden');
-        document.getElementById('dashboard').classList.remove('hidden');
-        if (hasDiscord) { document.getElementById('discord-card').classList.remove('hidden'); fetchDiscord(); }
-        if (hasRoblox) { document.getElementById('roblox-card').classList.remove('hidden'); fetchRoblox(); }
-        document.getElementById('nav-auth').innerHTML = `<div onclick="logoutAll()" class="px-7 py-3 rounded-3xl glass text-xs font-medium cursor-pointer hover:bg-white/10 transition flex items-center gap-2"><span class="text-emerald-400">●</span> CONNECTED</div>`;
-      } else {
-        document.getElementById('landing').classList.remove('hidden');
-        document.getElementById('dashboard').classList.add('hidden');
-        document.getElementById('nav-auth').innerHTML = `<button onclick="startDiscordLogin()" class="px-8 py-4 bg-white/10 hover:bg-white/20 transition rounded-3xl text-sm font-semibold">DISCORD</button><button onclick="startRobloxLogin()" class="px-8 py-4 bg-gradient-to-r from-[#ff0000] to-[#ff6600] text-sm font-semibold rounded-3xl">ROBLOX</button>`;
-      }
-    }
+        // ====================== AUTH ======================
+        function base64urlEncode(buffer) {
+            let str = '';
+            const bytes = new Uint8Array(buffer);
+            for (let i = 0; i < bytes.byteLength; i++) str += String.fromCharCode(bytes[i]);
+            return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+        }
 
-    function logoutDiscord() { localStorage.removeItem('discord_token'); discordToken = null; showCorrectScreen(); }
-    function logoutRoblox() { localStorage.removeItem('roblox_token'); robloxToken = null; showCorrectScreen(); }
-    function logoutAll() { logoutDiscord(); logoutRoblox(); }
+        function generateCodeVerifier() {
+            const array = new Uint8Array(32);
+            crypto.getRandomValues(array);
+            return base64urlEncode(array);
+        }
 
-    // ====================== MODALS ======================
-    function showPrivacy() {
-      document.getElementById('privacy-modal').classList.remove('hidden');
-      document.getElementById('privacy-modal').classList.add('flex');
-    }
-    function showTerms() {
-      document.getElementById('terms-modal').classList.remove('hidden');
-      document.getElementById('terms-modal').classList.add('flex');
-    }
-    function hideModals() {
-      document.getElementById('privacy-modal').classList.add('hidden');
-      document.getElementById('privacy-modal').classList.remove('flex');
-      document.getElementById('terms-modal').classList.add('hidden');
-      document.getElementById('terms-modal').classList.remove('flex');
-    }
+        async function generateCodeChallenge(verifier) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(verifier);
+            const digest = await crypto.subtle.digest('SHA-256', data);
+            return base64urlEncode(digest);
+        }
 
-    // ====================== INIT ======================
-    window.onload = () => {
-      createSnow();
-      checkCallback();
-      if (discordToken || robloxToken) showCorrectScreen();
-      
-      // Close modals with Escape
-      document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') hideModals();
-      });
-    };
-  </script>
+        function startDiscordLogin() {
+            // Uses your exact client_id + standard Discord OAuth endpoint
+            const url = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(DISCORD_REDIRECT)}&response_type=token&scope=identify`;
+            window.location.href = url;
+        }
+
+        async function startRobloxLogin() {
+            const verifier = generateCodeVerifier();
+            const challenge = await generateCodeChallenge(verifier);
+            localStorage.setItem('roblox_verifier', verifier);
+            const params = new URLSearchParams({
+                client_id: ROBLOX_CLIENT_ID,
+                redirect_uri: ROBLOX_REDIRECT,
+                response_type: 'code',
+                scope: 'openid profile',
+                code_challenge: challenge,
+                code_challenge_method: 'S256'
+            });
+            window.location.href = `https://apis.roblox.com/oauth/v1/authorize?${params}`;
+        }
+
+        // ====================== FETCH PROFILES ======================
+        async function fetchDiscord() {
+            if (!discordToken) return;
+            try {
+                const res = await fetch('https://discord.com/api/users/@me', { 
+                    headers: { Authorization: `Bearer ${discordToken}` } 
+                });
+                const user = await res.json();
+                const avatarURL = user.avatar 
+                    ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=512` 
+                    : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.id) % 5}.png`;
+                
+                document.getElementById('discord-avatar').src = avatarURL;
+                document.getElementById('discord-name').textContent = user.global_name || user.username;
+                document.getElementById('discord-username').textContent = `@${user.username}`;
+            } catch (e) {
+                logoutDiscord();
+            }
+        }
+
+        async function fetchRoblox() {
+            if (!robloxToken) return;
+            try {
+                const res = await fetch('https://apis.roblox.com/oauth/v1/userinfo', { 
+                    headers: { Authorization: `Bearer ${robloxToken}` } 
+                });
+                const user = await res.json();
+                const id = user.sub;
+                
+                const thumbRes = await fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${id}&size=420x420&format=Png`);
+                const thumbJson = await thumbRes.json();
+                const avatarURL = thumbJson.data?.[0]?.imageUrl || 'https://www.roblox.com/headshot-default.png';
+                
+                document.getElementById('roblox-avatar').src = avatarURL;
+                document.getElementById('roblox-name').textContent = user.name || 'Roblox Player';
+                document.getElementById('roblox-id').textContent = `ID: ${id}`;
+            } catch (e) {
+                logoutRoblox();
+            }
+        }
+
+        // ====================== CALLBACK HANDLER ======================
+        async function checkCallback() {
+            // Discord implicit token
+            const hash = window.location.hash.substring(1);
+            const hashParams = new URLSearchParams(hash);
+            const newDiscordToken = hashParams.get('access_token');
+            if (newDiscordToken) {
+                localStorage.setItem('discord_token', newDiscordToken);
+                discordToken = newDiscordToken;
+                window.history.replaceState({}, '', window.location.pathname);
+            }
+
+            // Roblox PKCE code
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            if (code) {
+                const verifier = localStorage.getItem('roblox_verifier');
+                if (verifier) {
+                    try {
+                        const tokenRes = await fetch('https://apis.roblox.com/oauth/v1/token', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: new URLSearchParams({
+                                grant_type: 'authorization_code',
+                                code,
+                                redirect_uri: ROBLOX_REDIRECT,
+                                client_id: ROBLOX_CLIENT_ID,
+                                code_verifier: verifier
+                            })
+                        });
+                        const tokenData = await tokenRes.json();
+                        if (tokenData.access_token) {
+                            localStorage.setItem('roblox_token', tokenData.access_token);
+                            robloxToken = tokenData.access_token;
+                        }
+                    } catch (e) {}
+                    localStorage.removeItem('roblox_verifier');
+                }
+                window.history.replaceState({}, '', window.location.pathname);
+            }
+
+            showCorrectScreen();
+        }
+
+        function showCorrectScreen() {
+            const hasDiscord = !!discordToken;
+            const hasRoblox = !!robloxToken;
+
+            if (hasDiscord || hasRoblox) {
+                document.getElementById('landing').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                
+                if (hasDiscord) { 
+                    document.getElementById('discord-card').classList.remove('hidden'); 
+                    fetchDiscord(); 
+                }
+                if (hasRoblox) { 
+                    document.getElementById('roblox-card').classList.remove('hidden'); 
+                    fetchRoblox(); 
+                }
+                
+                document.getElementById('nav-auth').innerHTML = `
+                    <div onclick="logoutAll()" class="px-7 py-3 rounded-3xl glass text-xs font-medium cursor-pointer hover:bg-white/10 transition flex items-center gap-2">
+                        <span class="text-emerald-400">●</span> CONNECTED
+                    </div>`;
+            } else {
+                document.getElementById('landing').classList.remove('hidden');
+                document.getElementById('dashboard').classList.add('hidden');
+                document.getElementById('nav-auth').innerHTML = `
+                    <button onclick="startDiscordLogin()" class="px-8 py-4 bg-white/10 hover:bg-white/20 transition rounded-3xl text-sm font-semibold">DISCORD</button>
+                    <button onclick="startRobloxLogin()" class="px-8 py-4 bg-gradient-to-r from-[#ff0000] to-[#ff6600] text-sm font-semibold rounded-3xl">ROBLOX</button>`;
+            }
+        }
+
+        function logoutDiscord() { 
+            localStorage.removeItem('discord_token'); 
+            discordToken = null; 
+            showCorrectScreen(); 
+        }
+        function logoutRoblox() { 
+            localStorage.removeItem('roblox_token'); 
+            robloxToken = null; 
+            showCorrectScreen(); 
+        }
+        function logoutAll() { 
+            logoutDiscord(); 
+            logoutRoblox(); 
+        }
+
+        // ====================== MODALS ======================
+        function showPrivacy() {
+            document.getElementById('privacy-modal').classList.remove('hidden');
+            document.getElementById('privacy-modal').classList.add('flex');
+        }
+        function showTerms() {
+            document.getElementById('terms-modal').classList.remove('hidden');
+            document.getElementById('terms-modal').classList.add('flex');
+        }
+        function hideModals() {
+            document.getElementById('privacy-modal').classList.add('hidden');
+            document.getElementById('privacy-modal').classList.remove('flex');
+            document.getElementById('terms-modal').classList.add('hidden');
+            document.getElementById('terms-modal').classList.remove('flex');
+        }
+
+        // ====================== INIT ======================
+        window.onload = () => {
+            createSnow();
+            checkCallback();
+            if (discordToken || robloxToken) showCorrectScreen();
+
+            // Close modals with Escape
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') hideModals();
+            });
+        };
+    </script>
 </body>
 </html>
