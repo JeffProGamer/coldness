@@ -7,28 +7,24 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
-
         :root {
             --cyan: #00f5ff;
             --purple: #a855f7;
             --roblox-red: #ff0000;
         }
-
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background: #0a0a12; 
-            overflow-x: hidden; 
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            overflow-x: hidden;
         }
-
-        .glass { 
-            background: rgba(255,255,255,0.05); 
-            backdrop-filter: blur(24px); 
-            border: 1px solid rgba(255,255,255,0.08); 
+        .glass {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.08);
         }
-        .frost-glow { 
-            box-shadow: 0 0 60px -15px var(--cyan), 0 0 120px -30px var(--purple); 
+        .frost-glow {
+            box-shadow: 0 0 60px -15px var(--cyan), 0 0 120px -30px var(--purple);
         }
-
         .hero-title {
             font-size: clamp(3.8rem, 11vw, 9rem);
             font-weight: 900;
@@ -37,67 +33,59 @@
             -webkit-text-fill-color: transparent;
             animation: frostShimmer 4s linear infinite;
         }
-
-        @keyframes frostShimmer { 
-            0%,100% { background-position: 0% 50%; } 
-            50% { background-position: 100% 50%; } 
+        @keyframes frostShimmer {
+            0%,100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
-
-        .snow-canvas { 
-            position: fixed; top:0; left:0; width:100%; height:100%; 
-            pointer-events:none; z-index:1; opacity:0.65; 
+        .snow-canvas {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            pointer-events:none; z-index:1; opacity:0.65;
         }
-
-        .profile-card, .connect-card { 
-            animation: cardPop 0.9s cubic-bezier(0.34,1.56,0.64,1); 
+        .profile-card, .connect-card {
+            animation: cardPop 0.9s cubic-bezier(0.34,1.56,0.64,1);
             transition: all 0.6s cubic-bezier(0.34,1.56,0.64,1);
         }
         .profile-card:hover, .connect-card:hover {
             transform: translateY(-24px) scale(1.04);
             box-shadow: 0 0 120px -15px var(--cyan), 0 0 180px -40px var(--purple);
         }
-        @keyframes cardPop { 
-            0% { transform:scale(0.55) rotate(-8deg); opacity:0; } 
-            100% { transform:scale(1) rotate(0); opacity:1; } 
+        @keyframes cardPop {
+            0% { transform:scale(0.55) rotate(-8deg); opacity:0; }
+            100% { transform:scale(1) rotate(0); opacity:1; }
         }
-
-        .avatar-glow { 
-            animation: avatarPulse 3s ease-in-out infinite; 
+        .avatar-glow {
+            animation: avatarPulse 3s ease-in-out infinite;
         }
-        @keyframes avatarPulse { 
-            0%,100% { box-shadow:0 0 40px -8px var(--cyan); } 
-            50% { box-shadow:0 0 120px 40px var(--purple); } 
+        @keyframes avatarPulse {
+            0%,100% { box-shadow:0 0 40px -8px var(--cyan); }
+            50% { box-shadow:0 0 120px 40px var(--purple); }
         }
-
-        .frost-button { 
-            position:relative; overflow:hidden; 
+        .frost-button {
+            position:relative; overflow:hidden;
         }
         .frost-button::before {
             content:''; position:absolute; top:-50%; left:-50%; width:40%; height:300%;
             background:linear-gradient(120deg, transparent, rgba(255,255,255,0.45), transparent);
             transform:skewX(-20deg); animation:frostSweep 4s linear infinite;
         }
-        @keyframes frostSweep { 
-            0% { transform:translateX(-150%) skewX(-20deg); } 
-            100% { transform:translateX(400%) skewX(-20deg); } 
+        @keyframes frostSweep {
+            0% { transform:translateX(-150%) skewX(-20deg); }
+            100% { transform:translateX(400%) skewX(-20deg); }
         }
-
-        .status-emoji { 
-            font-size:5.2rem; 
-            animation:coldFreeze 2.5s ease-in-out infinite; 
-            filter:drop-shadow(0 0 30px #00f5ff); 
+        .status-emoji {
+            font-size:5.2rem;
+            animation:coldFreeze 2.5s ease-in-out infinite;
+            filter:drop-shadow(0 0 30px #00f5ff);
         }
-        @keyframes coldFreeze { 
-            0%,100% { transform:scale(1) rotate(-8deg); } 
-            50% { transform:scale(1.22) rotate(8deg); } 
+        @keyframes coldFreeze {
+            0%,100% { transform:scale(1) rotate(-8deg); }
+            50% { transform:scale(1.22) rotate(8deg); }
         }
-
         .tab-active {
             border-bottom: 4px solid #00f5ff;
             color: #00f5ff;
             font-weight: 700;
         }
-
         .frost-section {
             animation: frostFadeIn 1.1s ease forwards;
         }
@@ -105,7 +93,6 @@
             from { opacity:0; transform: translateY(40px); }
             to { opacity:1; transform: translateY(0); }
         }
-
         .modal {
             animation: modalPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
         }
@@ -116,7 +103,6 @@
     </style>
 </head>
 <body class="text-white min-h-screen relative">
-
     <canvas id="snow" class="snow-canvas"></canvas>
 
     <!-- NAVBAR -->
@@ -153,22 +139,19 @@
         </div>
     </div>
 
-    <!-- DASHBOARD - TWO CHOICES ALWAYS VISIBLE -->
+    <!-- DASHBOARD -->
     <div id="dashboard" class="hidden min-h-screen pt-32 pb-24 relative z-10">
         <div class="max-w-7xl mx-auto px-8">
-            
             <!-- TAB NAV -->
             <div class="flex justify-center mb-16 border-b border-white/10">
                 <button onclick="switchTab(0)" id="tab-0" class="tab-active px-12 py-5 text-2xl font-semibold transition">MY ACCOUNTS</button>
                 <button onclick="switchTab(1)" id="tab-1" class="px-12 py-5 text-2xl font-semibold transition">HOW IT WORKS</button>
             </div>
 
-            <!-- TAB 1: MY ACCOUNTS - TWO FIXED CHOICES -->
+            <!-- TAB 1: MY ACCOUNTS -->
             <div id="tab-content-0">
                 <h2 class="text-center text-6xl font-black mb-16 tracking-[-3px] bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">CHOOSE YOUR FREEZE</h2>
-                
                 <div class="grid md:grid-cols-2 gap-12">
-                    
                     <!-- DISCORD COLUMN -->
                     <div>
                         <div class="text-center mb-6">
@@ -178,7 +161,6 @@
                         </div>
                         <div id="discord-section" class="min-h-[700px]"></div>
                     </div>
-
                     <!-- ROBLOX COLUMN -->
                     <div>
                         <div class="text-center mb-6">
@@ -191,7 +173,7 @@
                 </div>
             </div>
 
-            <!-- TAB 2: HOW IT WORKS (safe, no secrets) -->
+            <!-- TAB 2: HOW IT WORKS -->
             <div id="tab-content-1" class="hidden">
                 <div class="max-w-3xl mx-auto">
                     <div class="glass rounded-3xl p-16 frost-glow text-center">
@@ -231,7 +213,7 @@
         </div>
     </footer>
 
-    <!-- MODALS (safe) -->
+    <!-- MODALS -->
     <div id="privacy-modal" class="hidden fixed inset-0 bg-black/80 z-[999] flex items-center justify-center p-6">
         <div class="modal glass max-w-3xl w-full max-h-[90vh] overflow-y-auto rounded-3xl p-14 relative">
             <button onclick="hideModals()" class="absolute top-8 right-8 text-4xl hover:text-cyan-400">×</button>
@@ -239,15 +221,7 @@
             <div class="prose prose-invert max-w-none text-gray-300 text-base">
                 <p class="text-sm opacity-70 mb-10">Last updated: March 2026 • I am not nice. I am cold.</p>
                 <h2 class="text-3xl font-bold mb-5">1. I collect literally nothing</h2>
-                <p>This site is 100% static and runs in your browser. No server. No database. No analytics. No cookies. No tracking pixels. Nothing. I don't even know you exist until you click "Connect".</p>
-                <h2 class="text-3xl font-bold mb-5">2. What actually happens when you connect</h2>
-                <ul class="list-disc pl-6 space-y-3">
-                    <li>Discord or Roblox gives me a token (stored ONLY in your browser localStorage).</li>
-                    <li>I use that token ONCE to fetch your public profile (avatar, username, ID). That's it.</li>
-                    <li>I never store your data anywhere except your own device.</li>
-                    <li>When you logout or clear your browser — poof, gone forever.</li>
-                </ul>
-                <p class="font-bold text-red-400 mt-10">No one else can see your accounts. Ever.</p>
+                <p>This site is 100% static and runs in your browser. No server. No database. No analytics. No cookies. No tracking pixels. Nothing.</p>
             </div>
         </div>
     </div>
@@ -260,8 +234,6 @@
                 <p class="text-sm opacity-70 mb-8">Last updated: March 2026 • Read it or freeze.</p>
                 <h2 class="text-3xl font-bold mb-5">1. This is a toy. Don't be stupid.</h2>
                 <p>Use at your own risk. I am not affiliated with Discord or Roblox.</p>
-                <h2 class="text-3xl font-bold mb-5">2. One account per person. No abuse.</h2>
-                <p>Don't share tokens. Don't spam. If you break something, I will laugh and do nothing.</p>
             </div>
         </div>
     </div>
@@ -272,6 +244,7 @@
         const DISCORD_REDIRECT = 'https://jeffprogamer.github.io/coldness/';
         const ROBLOX_CLIENT_ID = '1151763102014904944';
         const ROBLOX_REDIRECT = 'https://jeffprogamer.github.io/coldness/';
+        const ROBLOX_CLIENT_SECRET = 'RBX-ZWcXiHOhe022aZKWR8uVKf2_khZCwNQrteadjf6qo60-NFa32ARLJDL1Fl8A8E8G';   // ← PASTE YOUR SECRET ID HERE !!!!
 
         let discordToken = localStorage.getItem('discord_token');
         let robloxToken = localStorage.getItem('roblox_token');
@@ -308,30 +281,18 @@
         }
 
         // ====================== AUTH ======================
-        function base64urlEncode(buffer) {
-            let str = '';
-            const bytes = new Uint8Array(buffer);
-            for (let i = 0; i < bytes.byteLength; i++) str += String.fromCharCode(bytes[i]);
-            return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-        }
-        function generateCodeVerifier() {
-            const array = new Uint8Array(32); crypto.getRandomValues(array); return base64urlEncode(array);
-        }
-        async function generateCodeChallenge(verifier) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(verifier);
-            const digest = await crypto.subtle.digest('SHA-256', data);
-            return base64urlEncode(digest);
-        }
         function startDiscordLogin() {
             const url = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(DISCORD_REDIRECT)}&response_type=token&scope=identify`;
             window.location.href = url;
         }
-        async function startRobloxLogin() {
-            const verifier = generateCodeVerifier();
-            const challenge = await generateCodeChallenge(verifier);
-            localStorage.setItem('roblox_verifier', verifier);
-            const params = new URLSearchParams({client_id: ROBLOX_CLIENT_ID, redirect_uri: ROBLOX_REDIRECT, response_type: 'code', scope: 'openid profile', code_challenge: challenge, code_challenge_method: 'S256'});
+
+        function startRobloxLogin() {
+            const params = new URLSearchParams({
+                client_id: ROBLOX_CLIENT_ID,
+                redirect_uri: ROBLOX_REDIRECT,
+                response_type: 'code',
+                scope: 'openid profile'
+            });
             window.location.href = `https://apis.roblox.com/oauth/v1/authorize?${params}`;
         }
 
@@ -348,7 +309,7 @@
             requestAnimationFrame(step);
         }
 
-        // ====================== RENDER TWO CHOICES ======================
+        // ====================== RENDER ======================
         function renderDiscord() {
             const section = document.getElementById('discord-section');
             if (!discordToken) {
@@ -363,7 +324,6 @@
                     </div>`;
                 return;
             }
-            // Connected profile
             section.innerHTML = `
                 <div class="profile-card glass rounded-3xl p-14 frost-glow">
                     <div class="flex justify-between items-start mb-10">
@@ -408,7 +368,6 @@
                     </div>`;
                 return;
             }
-            // Connected profile
             section.innerHTML = `
                 <div class="profile-card glass rounded-3xl p-14 frost-glow">
                     <div class="flex justify-between items-start mb-10">
@@ -466,21 +425,18 @@
                 document.getElementById('roblox-avatar').src = avatarURL;
                 document.getElementById('roblox-name').textContent = user.name || 'Roblox Player';
                 document.getElementById('roblox-id').textContent = `ID: ${id}`;
-
                 const profileRes = await fetch(`https://users.roblox.com/v1/users/${id}`);
                 const profile = await profileRes.json();
                 document.getElementById('roblox-description').textContent = profile.description || "No description yet ❄️";
-
                 const friendsRes = await fetch(`https://friends.roblox.com/v1/users/${id}/friends/count`);
                 const friendsData = await friendsRes.json();
                 animateValue('roblox-friends', 0, friendsData.count || 0, 1800);
-
                 const joined = new Date(profile.created).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
                 document.getElementById('roblox-created').textContent = joined;
             } catch (e) { logoutRoblox(); }
         }
 
-        // ====================== CALLBACK & SCREEN ======================
+        // ====================== CALLBACK ======================
         async function checkCallback() {
             const hash = window.location.hash.substring(1);
             const hashParams = new URLSearchParams(hash);
@@ -490,27 +446,37 @@
                 discordToken = newDiscordToken;
                 window.history.replaceState({}, '', window.location.pathname);
             }
+
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
             if (code) {
-                const verifier = localStorage.getItem('roblox_verifier');
-                if (verifier) {
-                    try {
-                        const tokenRes = await fetch('https://apis.roblox.com/oauth/v1/token', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                            body: new URLSearchParams({ grant_type: 'authorization_code', code, redirect_uri: ROBLOX_REDIRECT, client_id: ROBLOX_CLIENT_ID, code_verifier: verifier })
-                        });
-                        const tokenData = await tokenRes.json();
-                        if (tokenData.access_token) {
-                            localStorage.setItem('roblox_token', tokenData.access_token);
-                            robloxToken = tokenData.access_token;
-                        }
-                    } catch (e) {}
-                    localStorage.removeItem('roblox_verifier');
+                try {
+                    const tokenRes = await fetch('https://apis.roblox.com/oauth/v1/token', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({
+                            grant_type: 'authorization_code',
+                            code: code,
+                            redirect_uri: ROBLOX_REDIRECT,
+                            client_id: ROBLOX_CLIENT_ID,
+                            client_secret: ROBLOX_CLIENT_SECRET
+                        })
+                    });
+
+                    const tokenData = await tokenRes.json();
+                    if (tokenData.access_token) {
+                        localStorage.setItem('roblox_token', tokenData.access_token);
+                        robloxToken = tokenData.access_token;
+                        console.log('✅ Roblox token saved successfully');
+                    } else {
+                        console.error('❌ Roblox token error:', tokenData);
+                    }
+                } catch (e) {
+                    console.error('❌ Roblox OAuth exchange failed:', e);
                 }
                 window.history.replaceState({}, '', window.location.pathname);
             }
+
             showCorrectScreen();
         }
 
@@ -519,10 +485,8 @@
             if (hasAny) {
                 document.getElementById('landing').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
-                
                 renderDiscord();
                 renderRoblox();
-
                 document.getElementById('nav-auth').innerHTML = `
                     <div class="flex items-center gap-4">
                         <button onclick="switchTab(0)" class="px-8 py-3 text-base font-medium hover:bg-white/10 rounded-3xl transition">Dashboard</button>
